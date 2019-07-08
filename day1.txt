@@ -1,0 +1,392 @@
+1..
+
+MyBean.java
+**********
+
+package com.dsrc.spring.beans;
+
+public class MyBean {
+
+	String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+}
+Applicationcontext.xml
+***********************
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="basic" class="com.dsrc.spring.beans.MyBean" >
+	<property name="name" value="Hello World"/></bean>
+		
+</beans>
+MyMain.java
+***********
+package com.dsrc;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import com.dsrc.spring.beans.MyBean;
+
+public class MyMain {
+	public static void main(String[] args) {
+		// Code to load Spring Bean..
+		Resource resource=new ClassPathResource("Applicationcontext.xml");
+				BeanFactory beanfactory =new XmlBeanFactory(resource);
+		 		MyBean bean2 = (MyBean) beanfactory.getBean("basic");
+		 		System.out.println("Name=:"+bean2.getName());
+	}
+}
+...................................................................................................
+2..
+
+NameBean.java
+*************
+package com.dsrc.beans;
+
+public class NameBean {
+     String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+     
+}
+context.xml
+***********
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="basic" class="com.dsrc.beans.NameBean" >
+	<property name="name" value="beni"/></bean>
+		
+</beans>
+MyMain.java
+***********
+package com.dsrc;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.*;
+import com.dsrc.beans.NameBean;
+
+public class MyMain 
+{
+public static void main(String[] args) {
+	Resource resource=new ClassPathResource("context.xml");
+			BeanFactory beanfactory =new XmlBeanFactory(resource);
+	 		NameBean bean2 = (NameBean) beanfactory.getBean("basic");
+	 		System.out.println("Name="+bean2.getName());
+}
+}
+.............................................................................................................
+3...
+EmployeeBean.java
+******************
+package com.dsrc.beans;
+
+public class EmployeeBean {
+	int empno;
+	String name;
+	String city;
+	public int getEmpno() {
+		return empno;
+	}
+	public void setEmpno(int empno) {
+		this.empno = empno;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+}
+context.xml
+**********
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="basic" class="com.dsrc.beans.EmployeeBean" >
+	<property name="empno" value="101"></property>
+	<property name="name" value="beni"></property>
+	<property name="city" value="chennai"></property></bean>
+		
+</beans>
+MYMain.java
+*************
+package com.dsrc;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.*;
+import com.dsrc.beans.EmployeeBean;
+
+public class MyMain 
+{
+public static void main(String[] args) {
+	Resource resource=new ClassPathResource("context.xml");
+	BeanFactory beanfactory=new XmlBeanFactory(resource);
+	EmployeeBean bean=(EmployeeBean) beanfactory.getBean("basic");
+	System.out.println("Id="+bean.getEmpno()+"\n"+"Name="+bean.getName()+"\n"+"City="+bean.getCity());
+}
+}
+...........................................................................................................
+4..
+MyBean.java
+**********
+package com.dsrc.spring.beans;
+
+public class MyBean {
+String name="Hello World";
+
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
+
+}
+ApplicationConfig.java
+***********************
+package com.dsrc.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import com.dsrc.spring.beans.MyBean;
+@Configuration
+public class ApplicationConfig {
+	@Bean(name = "hello")
+	 public MyBean getBean() {
+		return new MyBean();
+	 }
+}
+MyMain.java
+***********
+package com.dsrc;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import com.dsrc.config.ApplicationConfig;
+import com.dsrc.spring.beans.MyBean;
+public class MyMain 
+{
+public static void main(String[] args) {
+	//Code to load Spring Bean..
+	AbstractApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+			 MyBean bean = (MyBean) context.getBean("hello");
+			 System.out.println(bean.getName());
+}}
+............................................................................................................
+6..
+EmployeeBean.java
+*****************
+package com.dsrc.beans;
+
+public class EmployeeBean {
+	int empno;
+	String name;
+	String city;
+	public EmployeeBean() {
+	}
+	public EmployeeBean(int empno, String name, String city) {
+		this.empno=empno;
+		this.name=name;
+		this.city=city;
+	}
+	public int getEmpno() {
+		return empno;
+	}
+	public void setEmpno(int empno) {
+		this.empno = empno;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+}
+ApplicationConfig.java
+************************
+package com.dsrc.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import com.dsrc.beans.EmployeeBean;
+
+@Configuration
+public class ApplicationConfig {
+	@Bean(name = "hello")
+	 public EmployeeBean getBean() {
+		return new EmployeeBean(101,"beni","chennai");
+	 }
+}
+MyMain.java
+***********
+package com.dsrc;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import com.dsrc.beans.EmployeeBean;
+import com.dsrc.config.ApplicationConfig;
+
+public class MyMain 
+{
+public static void main(String[] args) {
+	AbstractApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	 EmployeeBean bean = (EmployeeBean) context.getBean("hello");
+	 System.out.println("Id="+bean.getEmpno()+"\n"+"Name="+bean.getName()+"\n"+"City="+bean.getCity());}
+}
+..............................................................................................................
+7..
+EmployeeBean.java
+*****************
+package com.dsrc.beans;
+
+public class EmployeeBean {
+	int empno;
+	String name;
+	String city;
+	public int getEmpno() {
+		return empno;
+	}
+	public void setEmpno(int empno) {
+		this.empno = empno;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+}
+DepartmentBean.java
+*********************
+package com.dsrc.beans;
+
+public class DepartmentBean {
+	int deptno;
+	String deptName;
+	public int getDeptno() {
+		return deptno;
+	}
+	public void setDeptno(int deptno) {
+		this.deptno = deptno;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}		
+
+}
+context.xml
+************
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean name="employee" class="com.dsrc.beans.EmployeeBean">
+	<property name="empno" value="101"/>
+	<property name="name" value="Rock"/>
+	<property name="city" value="Newyork"/></bean>
+	
+		<bean name="department" class="com.dsrc.beans.DepartmentBean">
+	<property name="deptno" value="10"/>
+	<property name="deptName" value="sales"/>
+</bean></beans>
+MyMain.java
+***********
+package com.dsrc;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+import com.dsrc.beans.DepartmentBean;
+import com.dsrc.beans.EmployeeBean;
+
+public class MyMain 
+{
+public static void main(String[] args) {
+	Resource resource=new ClassPathResource("context.xml");
+	BeanFactory beanfactory=new XmlBeanFactory(resource);
+	System.out.println("Employee details");
+	EmployeeBean bean=(EmployeeBean) beanfactory.getBean("employee");
+	System.out.println("EmpNo: "+bean.getEmpno()+" "+"Name: "+bean.getName()+" "+"City: "+bean.getCity());
+	System.out.println("Department details");
+	DepartmentBean dept=(DepartmentBean) beanfactory.getBean("department");
+	System.out.println("DeptNo: "+dept.getDeptno()+" "+"Name: "+dept.getDeptName());}
+}
+.........................................................................................................
+8..
+EmployeeBean,DepartmentBean
+
+ApplicationConfig.java
+********************
+@Configuration
+public class ApplicationConfig {
+	@Bean(name = "employee")
+	 public EmployeeBean getEmployee() {
+		return new EmployeeBean(101,"Rock","NewYork");
+	 }@Bean(name = "department")
+	 public DepartmentBean getDepartment() {
+		return new DepartmentBean(10,"sales");
+	 }
+}
+MyMain.java
+************
+public class MyMain 
+{
+public static void main(String[] args) {
+	AbstractApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	 System.out.println("Employee details");
+	 EmployeeBean bean = (EmployeeBean) context.getBean("employee");
+	 System.out.println("EmpNo: "+bean.getEmpno()+" "+"Name: "+bean.getName()+" "+"City: "+bean.getCity());
+	 System.out.println("Department details");
+	 DepartmentBean dept = (DepartmentBean) context.getBean("department");
+	 System.out.println("DeptNo: "+dept.getDeptno()+" "+"Name: "+dept.getDeptName());
+}
+}
+......................................................................................................
